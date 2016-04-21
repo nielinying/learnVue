@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>todoList</title>
+  <style>
+  .completed{color: #999;text-decoration: line-through;}
+  .completed em{color: #0a0;font-style: normal;}
+  </style>
+</head>
+<body>
+
+<div id="todoApp">
+
+  <input type="text" v-model="newTask" v-on:keyup.enter="addNewTask">&nbsp;输入文字按Enter键添加
+  <hr>
+
+  <ul>
+    <li v-for="list in todoList">
+
+      <span v-on:click="toogleTask(list)" v-bind:class="list.completed?'completed':''">
+        任务：{{list.task}}---------<em>{{list.completed?"完成":"未完成"}}</em>-----
+      </span>
+      <button v-on:click="removeTask($index)">删除</button>
+
+    </li>
+  </ul>
+
+<p>一共有：{{todoList.length}}条任务</p>
+
+<pre>
+  data:{{$data | json}}
+</pre>
+
+    </div>
+
+<script src="js/vue.js"></script>
+
+<script>
+new Vue({
+
+  el: '#todoApp',
+  data:{
+
+    newTask:"",
+    todoList:[
+      {task:'前天做的一些事情 ',completed:true},
+      {task:'昨天做的事情',completed:true},
+      {task:'今天将要做的事情',completed:false},
+      {task:'明天的安排',completed:false},
+      {task:'后天的安排',completed:false}
+    ]
+
+  },
+  methods:{
+
+    toogleTask:function(task){
+      task.completed = !task.completed;
+    },
+
+
+    addNewTask:function(){
+      var text =this.newTask.trim();
+      if(text){
+        this.todoList.push({task: text ,completed:false})
+        this.newTask ="";
+      }
+    },
+
+    removeTask:function(index){
+      this.todoList.splice(index,1)
+    }
+
+
+
+  }
+
+});
+</script>
+
+</body>
+</html>
